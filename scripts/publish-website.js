@@ -9,17 +9,25 @@ let website_notes = "/Users/danielchapman/Library/Mobile Documents/iCloud~md~obs
 let website_dir = "/Users/danielchapman/github/dschapman/dschapman-com"
 
 let today = Date()
-let input = await arg("Publish:", [{ name: "Website Content", description: "Publish any changes to poems, articles or blog posts" }, { name: "Website Notes", description: "Publish any changes to public notes" }, {name: "All Content", description:"Publish it all"}])
+let output
+let input = await arg("Publish:", [{ name: "Website Content", description: "Publish any changes to poems, articles or blog posts", "value": "Website Content" }, { name: "Website Notes", description: "Publish any changes to public notes", value: "Website Notes"  }, {name: "All Content", description:"Publish it all", value: "All Content"}])
 // -C allows git to be run from any directory
 switch (input) {
     case "Website Content":
-        await exec(`git -C "${website_content}" add -A`)
-        await exec(`git -C "${website_content}" commit -m "Publish content: ${today.toString()}"`)
-        await exec(`git -C "${website_content}" push`)
-        await exec(`git -C "${website_dir}" submodule update --remote`)
-        await exec(`git -C "${website_dir}" add dschapman-com-content`)
-        await exec(`git -C "${website_dir}" commit -m "Publish content: ${today.toString()}"`)
-        await exec(`git -C "${website_dir}" push`)
+        output = await exec(`git -C "${website_content}" add -A`)
+        console.log(output.stdout)
+        output = await exec(`git -C "${website_content}" commit -m "Publish content: ${today.toString()}"`)
+        console.log(output.stdout)
+        output = await exec(`git -C "${website_content}" push`)
+        console.log(output.stdout)
+        output = await exec(`git -C "${website_dir}" submodule update --remote`)
+        console.log(output.stdout)
+        output = await exec(`git -C "${website_dir}" add dschapman-com-content`)
+        console.log(output.stdout)
+        output = await exec(`git -C "${website_dir}" commit -m "Publish content: ${today.toString()}"`)
+        console.log(output.stdout)
+        output = await exec(`git -C "${website_dir}" push`)
+        console.log(output.stdout)
         break;
     case "Website Notes":
         await exec(`git -C "${website_notes}" add -A`)
